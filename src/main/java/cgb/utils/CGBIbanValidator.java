@@ -13,6 +13,10 @@ public class CGBIbanValidator {
 	private CGBIbanValidator() {
 	}
 
+	/**
+	 * Singleton de CGBIbanValidator
+	 * @return instance unique
+	 */
 	public static CGBIbanValidator getInstanceValidator() {
 		if ( instance == null ) {
 			instance = new CGBIbanValidator();
@@ -27,33 +31,43 @@ public class CGBIbanValidator {
 	//	• BBAN (Basic Bank Account Number) : Le numéro de compte bancaire de base, dont la structure
 	//	varie selon le pays. Il peut inclure le code de la banque, le code de l'agence, et le numéro de
 	//	compte.
-	public boolean isIbanStructureValide(String iban) throws InvalidIbanFormatException {
-
-			for(int i = 0; i<iban.length(); i++) {
-				if(i<=1) {
-					if(!Character.isLetter(iban.charAt(i))) { throw new InvalidIbanFormatException(); }
-				}else if(i<=3) {
-					if(!Character.isDigit(iban.charAt(i))) { throw new InvalidIbanFormatException(); }
-				} else {	
-					if(!Character.isDigit(iban.charAt(i)) && !Character.isLetter(iban.charAt(i))) { throw new InvalidIbanFormatException(); }
-				}
-			}
-			return true;
+	/**
+	 * @param iban
+	 * @return Si la structure de l'iban est valide: true
+	 */
+	public boolean isIbanStructureValide(String iban) {
+		return iban.matches("FR{2}[0-9]{25}");
 	}
 
+	/**
+	 * @param iban
+	 * @return Si la structure et les données de l'iban sont valide (verification du CRC): true
+	 */
 	public boolean isIbanValide(String iban) {
 		IBANValidator validator = IBANValidator.getInstance();
 		return validator.isValid(iban);
 	}
 
+	/**
+	 * @param iban
+	 * @return Le pays de l'iban
+	 */
 	public String getCountryCode(String iban) {
-		return iban.substring(0, 1);
+		return iban.substring(0, 2);
 	}
 
+	/**
+	 * @param iban
+	 * @return Le CRC d'un iban
+	 */
 	public String getCheckDigits(String iban) {
-		return iban.substring(2, 3);
+		return iban.substring(2, 4);
 	}
 
+	/**
+	 * @param iban
+	 * @return Le BBAN d'un iban
+	 */
 	public String getBBAN(String iban) {
 		return iban.substring(4);
 	}
