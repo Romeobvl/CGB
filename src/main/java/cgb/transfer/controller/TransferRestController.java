@@ -27,37 +27,31 @@ public class TransferRestController {
 
 	@PostMapping
 	public ResponseEntity<?> createTransfer(@RequestBody TransferRequest transferRequest) {
-		//public ResponseEntity<Transfer> createTransfer(@RequestBody TransferRequest transferRequest) {
-		try {
-			Transfer transfer = null;
-			if(transferRequest.getTransferDate() == null) {
-				transfer = transferService.createTransfer(
-						transferRequest.getSourceAccountNumber(),
-						transferRequest.getDestinationAccountNumber(),
-						transferRequest.getAmount(),
-						LocalDate.now(),
-						transferRequest.getDescription()
-						);
-			} else {
-				try {
-				transfer = transferService.createTransfer(
-						transferRequest.getSourceAccountNumber(),
-						transferRequest.getDestinationAccountNumber(),
-						transferRequest.getAmount(),
-						transferRequest.getTransferDate(),
-						transferRequest.getDescription()
-						);
-				} catch (TransferDateException e){
-				
-				}
-			}
+	
+	    try {
+	        Transfer transfer = transferRequest.getTransferDate() == null
+	            ? transferService.createTransfer(
+	                    transferRequest.getSourceAccountNumber(),
+	                    transferRequest.getDestinationAccountNumber(),
+	                    transferRequest.getAmount(),
+	                    LocalDate.now(),
+	                    transferRequest.getDescription()
+	              )
+	            : transferService.createTransfer(
+	                    transferRequest.getSourceAccountNumber(),
+	                    transferRequest.getDestinationAccountNumber(),
+	                    transferRequest.getAmount(),
+	                    transferRequest.getTransferDate(),
+	                    transferRequest.getDescription()
+	              );
 
-			return ResponseEntity.ok(transfer);
-		}catch (RuntimeException e) {
-			TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-		}        
-	}  
+	        return ResponseEntity.ok(transfer);
+	        
+	    } catch (RuntimeException e) {
+	        TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+	    }
+}
 
 	@DeleteMapping
 	public ResponseEntity<?> deleteTransfer(@RequestBody Long id) {
