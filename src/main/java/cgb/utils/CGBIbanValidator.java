@@ -35,15 +35,15 @@ public class CGBIbanValidator {
 	 * @param iban
 	 * @return Si la structure de l'iban est valide: true
 	 */
-	public boolean isIbanStructureValide(String iban) {
-		return iban.matches("FR{2}[0-9]{25}");
+	public boolean isIbanStructureValid(String iban) {
+		return iban.matches("^FR[0-9]{25}$");
 	}
 
 	/**
 	 * @param iban
 	 * @return Si la structure et les données de l'iban sont valide (verification du CRC): true
 	 */
-	public boolean isIbanValide(String iban) {
+	public boolean isIbanValid(String iban) {
 		IBANValidator validator = IBANValidator.getInstance();
 		return validator.isValid(iban);
 	}
