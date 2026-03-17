@@ -39,6 +39,7 @@ public class TransferRestController {
 						transferRequest.getDescription()
 						);
 			} else {
+				try {
 				transfer = transferService.createTransfer(
 						transferRequest.getSourceAccountNumber(),
 						transferRequest.getDestinationAccountNumber(),
@@ -46,6 +47,9 @@ public class TransferRestController {
 						transferRequest.getTransferDate(),
 						transferRequest.getDescription()
 						);
+				} catch (TransferDateException e){
+				
+				}
 			}
 
 			return ResponseEntity.ok(transfer);
