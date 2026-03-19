@@ -47,7 +47,7 @@ public class TransferRestController {
 
 	        return ResponseEntity.ok(transfer);
 	        
-	    } catch (RuntimeException e) {
+	    } catch (TransferException e) {
 	        TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	    }

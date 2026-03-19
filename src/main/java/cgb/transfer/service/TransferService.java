@@ -11,6 +11,7 @@ import cgb.transfer.repository.AccountRepository;
 import cgb.transfer.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -23,20 +24,37 @@ public class TransferService {
     private TransferRepository transferRepository;
 
     
-    /*
-     * Rappel du cours sur les transactions... Tout ou rien
+    /**
+     * @param sourceAccountNumber
+     * @param destinationAccountNumber
+     * @param amount
+     * @param transferDate
+     * @param description
+     * @return
+     * @throws DateTransferException Si la date est antérieur à la date du jour
+     * @throws AmountTransferException Si le montant du transfert est inferieur ou égal à 0
+     * @throws InvalidAccountTransferException Si le compte n'existe pas
+     * @throws InsufficientFundsTransferException Si le solde du compte source est insuffisant 
      */
     @Transactional
     public Transfer createTransfer(String sourceAccountNumber, String destinationAccountNumber,
-                                   Double amount, LocalDate transferDate, String description) {
+                                   Double amount, LocalDate transferDate, String description) throws DateTransferException, AmountTransferException, InvalidAccountTransferException, InsufficientFundsTransferException {
         Account sourceAccount = accountRepository.findById(sourceAccountNumber)
-                				.orElseThrow(() -> new RuntimeException("Source account not found"));
+                				.orElseThrow(() -> new InvalidAccountTransferException("Source"));
         Account destinationAccount = accountRepository.findById(destinationAccountNumber)
-                				.orElseThrow(() -> new RuntimeException("Destination account not found"));
+                				.orElseThrow(() -> new InvalidAccountTransferException("Destination"));
 
+        if (amount <= 0) {
+        	throw new AmountTransferException();
+        }
+        
+        if(transferDate.isBefore(LocalDate.now())) {
+        	throw new DateTransferException();
+        }
+        
         /*Pas de découvert autorisé*/
         if (sourceAccount.getSolde().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient funds");
+            throw new InsufficientFundsTransferException();
         }else {
 
         sourceAccount.setSolde(sourceAccount.getSolde()-(amount)); 
