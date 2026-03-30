@@ -39,9 +39,9 @@ public class TransferControllerTest {
 		Transfer transfer = new Transfer();
 		transfer.setAmount(10.0);
 		transfer.setDescription("Test du transfer");
-		transfer.setDestinationAccountNumber("123456789");
-		transfer.setSourceAccountNumber("234567891");
-		transfer.setTransferDate(LocalDate.parse("2018-12-06"));
+		transfer.setDestinationAccountNumber("FR5554448575784477474466689");
+		transfer.setSourceAccountNumber("FR5554448575784477474474989");
+		transfer.setTransferDate(LocalDate.parse("2027-12-06"));
 		mockMvc.perform(post("/api/transfers").contentType(MediaType.APPLICATION_JSON).content(asJsonString(transfer)))
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
