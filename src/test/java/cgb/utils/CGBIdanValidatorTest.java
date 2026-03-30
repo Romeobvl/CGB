@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
+import cgb.transfer.exception.InvalidIbanFormatException;
+import cgb.transfer.exception.InvalidUnCheckableIbanException;
+
 public class CGBIdanValidatorTest {
 	
 	public static CGBIbanValidator ibanValidator;
@@ -21,23 +24,23 @@ public class CGBIdanValidatorTest {
 	}
 	
 	@Test
-	public void testIsIbanStructureValid() {
+	public void testIsIbanStructureValid() throws InvalidIbanFormatException {
 		assertInstanceOf(Boolean.class, ibanValidator.isIbanStructureValid("FR7712694732976829990161303"));
 		assertTrue(ibanValidator.isIbanStructureValid("FR7712694732976829990161303"));
-		assertFalse(ibanValidator.isIbanStructureValid("FR77126945515732976829990161303"));
-		assertFalse(ibanValidator.isIbanStructureValid("FR771269455157329768299930"));
-		assertFalse(ibanValidator.isIbanStructureValid("test"));
-		assertFalse(ibanValidator.isIbanStructureValid("FR77126945515732976829990AZE303"));
+		assertThrows(InvalidIbanFormatException.class, () -> ibanValidator.isIbanStructureValid("FR77126945515732976829990310"));
+		assertThrows(InvalidIbanFormatException.class, () -> ibanValidator.isIbanStructureValid("FR77126945515732976829990161303"));
+		assertThrows(InvalidIbanFormatException.class, () -> ibanValidator.isIbanStructureValid("test"));
+		assertThrows(InvalidIbanFormatException.class, () -> ibanValidator.isIbanStructureValid("FR77126945515732976829990AZE303"));
 	}
 	
 	@Test
-	public void testIsIbanValid() {
+	public void testIsIbanValid() throws InvalidUnCheckableIbanException {
 		assertInstanceOf(Boolean.class, ibanValidator.isIbanValid("FR7712694732976829990161303"));
 		assertTrue(ibanValidator.isIbanValid("FR7712694732976829990161303"));
-		assertFalse(ibanValidator.isIbanValid("FR77126945515732976829990161303"));
-		assertFalse(ibanValidator.isIbanValid("FR771269455157329768299930"));
-		assertFalse(ibanValidator.isIbanValid("test"));
-		assertFalse(ibanValidator.isIbanValid("FR77126945515732976829990AZE303"));
+		assertThrows(InvalidUnCheckableIbanException.class, () -> ibanValidator.isIbanValid("FR77126945515732976829990310"));
+		assertThrows(InvalidUnCheckableIbanException.class, () -> ibanValidator.isIbanValid("FR77126945515732976829990161303"));
+		assertThrows(InvalidUnCheckableIbanException.class, () -> ibanValidator.isIbanValid("test"));
+		assertThrows(InvalidUnCheckableIbanException.class, () -> ibanValidator.isIbanValid("FR77126945515732976829990AZE303"));
 	}
 	
 	@Test
