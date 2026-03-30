@@ -102,9 +102,7 @@ public class DatabaseInitializer {
         account8.setAccountNumber(IbanGenerator.generateValidIban());
         account8.setSolde(1000.00);
         accountRepository.save(account8);
-<<<<<<< HEAD
-=======
-        
+
         Account account9 = new Account();
         account9.setAccountNumber(IbanGenerator.generateValidIban());
         account9.setSolde(1500.00);
@@ -164,6 +162,6 @@ public class DatabaseInitializer {
         account20.setAccountNumber(IbanGenerator.generateValidIban());
         account20.setSolde(4300.00);
         accountRepository.save(account20);
->>>>>>> refs/heads/feature/Mission-1.2
+
     }
 }
