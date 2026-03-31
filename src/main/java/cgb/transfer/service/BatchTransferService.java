@@ -1,0 +1,59 @@
+package cgb.transfer.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import cgb.transfer.dto.TransferRequest;
+import cgb.transfer.entity.Account;
+import cgb.transfer.entity.BatchTransfer;
+import cgb.transfer.entity.Transfer;
+import cgb.transfer.exception.*;
+import cgb.transfer.exception.DeleteTransferException.FailureTransfert;
+import cgb.transfer.repository.AccountRepository;
+import cgb.transfer.repository.BatchTransferRepository;
+import cgb.transfer.repository.TransferRepository;
+import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class BatchTransferService {
+
+    @Autowired
+    private AccountRepository accountRepository;
+    
+    @Autowired
+    private BatchTransferRepository batchTransferRepository;
+    
+    @Autowired
+    private TransferRepository transferRepository;
+    
+    @Async
+    public BatchTransfer createBatchTransfer(String refLot, String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException, DateTransferException, AmountTransferException, InsufficientFundsTransferException {
+    	  if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
+    		  throw new InvalidAccountTransferException("Source");
+    	  }
+  				
+    	  BatchTransfer batch = new BatchTransfer();
+    	  batch.setRefLot(refLot);
+    	  batch.setDescriptionLot(descriptionLot);
+    	  batch.setSourceAccountNumber(sourceAccountNumber);
+    	  batch.setDate(LocalDate.now());
+    	  
+    	  for (TransferRequest transferRequest: listTransfer) {
+    		Transfer transfer = new Transfer();
+    		transfer.setSourceAccountNumber(sourceAccountNumber);
+    		transfer.setDestinationAccountNumber(transferRequest.getDestinationAccountNumber());
+    		transfer.setAmount(transferRequest.getAmount());
+    		transfer.setTransferDate(LocalDate.now());
+    		transfer.setDescription(transferRequest.getDescription());
+    		batch.addTransfer(transfer);
+    		transferRepository.save(transfer);
+    	  }
+    	
+    	return batchTransferRepository.save(batch);
+    }
+}

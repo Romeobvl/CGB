@@ -39,23 +39,11 @@ public class TransferService {
      * @param amount
      * @param transferDate
      * @param description
-     * @return
+     * @return L'objet transfert qui a été sauvegarder
      * @throws DateTransferException Si la date est antérieur à la date du jour
      * @throws AmountTransferException Si le montant du transfert est inferieur ou égal à 0
      * @throws InvalidAccountTransferException Si le compte n'existe pas
      * @throws InsufficientFundsTransferException Si le solde du compte source est insuffisant 
-     */
-    /**
-     * Fonction transactionnelle de création d'un transfert en DB. Gère l'interdiction de découvert.
-     * 
-     * @param sourceAccountNumber  L'identifiant unique du compte à l'origine du transfert.
-     * @param destinationAccountNumber  L'identifiant unique du compte destinataire du transfert.
-     * @param amount  Le montant du tranfert.
-     * @param transferDate  La date du tranfert.
-     * @param description  La description associé au transfert.
-     * @return  L'objet transfert qui a été sauvegarder
-     * @throws RuntimeException  On annule la transaction si 
-     * 		   le compte source n'a pas le solde suffisant.
      */
     @Transactional
     public Transfer createTransfer(String sourceAccountNumber, String destinationAccountNumber,
