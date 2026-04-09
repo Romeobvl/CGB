@@ -55,7 +55,7 @@ public class Transfer {
     /**
      * Etat du transfer
      */
-    private State state;
+    private String state;
     
     // Getters and Setters with lombok
     
@@ -101,10 +101,10 @@ public class Transfer {
 	public void setBatch(BatchTransfer batchTransfer) {
 		this.batch = batchTransfer;
 	}
-    public State getState() {
+    public String getState() {
 		return state;
 	}
-	public void setState(State state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

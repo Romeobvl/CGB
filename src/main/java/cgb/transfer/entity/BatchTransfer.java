@@ -33,7 +33,7 @@ public class BatchTransfer {
     /**
      * Etat du transfer
      */
-    private State state;
+    private String state;
 	
 	//Getters & Setters
 	public Long getId() {
@@ -76,11 +76,11 @@ public class BatchTransfer {
 		this.date = date;
 	}
 
-	public State getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

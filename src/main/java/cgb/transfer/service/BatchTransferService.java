@@ -35,7 +35,7 @@ public class BatchTransferService {
     private TransferService transferService;
     
     @Async
-    public BatchTransfer createBatchTransfer(String refLot, String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException, DateTransferException, AmountTransferException, InsufficientFundsTransferException {
+    public BatchTransfer createBatchTransfer(String refLot, String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException {
     	  if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
     		  throw new InvalidAccountTransferException("Source");
     	  }
@@ -45,12 +45,14 @@ public class BatchTransferService {
     	  batch.setDescriptionLot(descriptionLot);
     	  batch.setSourceAccountNumber(sourceAccountNumber);
     	  batch.setDate(LocalDate.now());
+    	  batchTransferRepository.save(batch);
     	  
     	  for (TransferRequest transferRequest: listTransfer) {
-    		Transfer transfer = transferService.createTransfer(sourceAccountNumber, transferRequest.getDestinationAccountNumber(), transferRequest.getAmount(), LocalDate.now(), transferRequest.getDescription());
+    		Transfer transfer = transferService.createTransferForBatch(sourceAccountNumber, transferRequest.getDestinationAccountNumber(), transferRequest.getAmount(), LocalDate.now(), transferRequest.getDescription());
     		transfer.setBatch(batch);
     		batch.addTransfer(transfer);
     		transferRepository.save(transfer);
+    		batchTransferRepository.save(batch);
     	  }
     	
     	return batchTransferRepository.save(batch);

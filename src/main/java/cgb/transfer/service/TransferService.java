@@ -56,30 +56,23 @@ public class TransferService {
 		transfer.setAmount(amount);
 		transfer.setTransferDate(transferDate);
 		transfer.setDescription(description);
-		transfer.setState(State.WAITING);
 
 		Optional<Account> sourceAccount = accountRepository.findById(sourceAccountNumber);
 		Optional<Account> destinationAccount = accountRepository.findById(destinationAccountNumber);
 
 		if(sourceAccount == null){
-			transfer.setState(State.FAILURE);
 			throw new InvalidAccountTransferException("Source");
 		}
 
 		if(destinationAccount == null){
-			transfer.setState(State.FAILURE);
 			throw new InvalidAccountTransferException("Destination");
 		}
 
-
 		if(transferDate.isBefore(LocalDate.now())) {
-			transfer.setState(State.FAILURE);
 			throw new DateTransferException();
 		}else if (amount <= 0) {
-			transfer.setState(State.FAILURE);
 			throw new AmountTransferException();
 		}else if (sourceAccount.get().getSolde().compareTo(amount) < 0) {
-			transfer.setState(State.CANCELED);
 			throw new InsufficientFundsTransferException();
 		} else {
 			sourceAccount.get().setSolde(sourceAccount.get().getSolde()-(amount)); 
@@ -88,12 +81,73 @@ public class TransferService {
 			accountRepository.save(sourceAccount.get());
 			accountRepository.save(destinationAccount.get());
 
-			transfer.setState(State.SUCCESS);
+			return transferRepository.save(transfer);
+		}
+
+	}
+	
+	
+	
+	
+	@Transactional
+	public Transfer createTransferForBatch(String sourceAccountNumber, String destinationAccountNumber,
+			Double amount, LocalDate transferDate, String description) {
+
+		Transfer transfer = new Transfer();
+		transfer.setSourceAccountNumber(sourceAccountNumber);
+		transfer.setDestinationAccountNumber(destinationAccountNumber);
+		transfer.setAmount(amount);
+		transfer.setTransferDate(transferDate);
+		transfer.setDescription(description);
+		transfer.setState(State.WAITING.getNom());
+		transferRepository.save(transfer);
+
+		Optional<Account> sourceAccount = accountRepository.findById(sourceAccountNumber);
+		Optional<Account> destinationAccount = accountRepository.findById(destinationAccountNumber);
+
+		if(sourceAccount == null){
+			transfer.setState(State.FAILURE.getNom());
+			transferRepository.save(transfer);
+			return transfer;
+		}
+
+		if(destinationAccount == null){
+			transfer.setState(State.FAILURE.getNom());
+			transferRepository.save(transfer);
+			return transfer;
+		}
+
+
+		if(transferDate.isBefore(LocalDate.now())) {
+			transfer.setState(State.FAILURE.getNom());
+			transferRepository.save(transfer);
+			return transfer;
+		}else if (amount <= 0) {
+			transfer.setState(State.FAILURE.getNom());
+			transferRepository.save(transfer);
+			return transfer;
+		}else if (sourceAccount.get().getSolde().compareTo(amount) < 0) {
+			transfer.setState(State.CANCELED.getNom());
+			transferRepository.save(transfer);
+			return transfer;
+		} else {
+			sourceAccount.get().setSolde(sourceAccount.get().getSolde()-(amount)); 
+			destinationAccount.get().setSolde(destinationAccount.get().getSolde()+(amount));
+
+			accountRepository.save(sourceAccount.get());
+			accountRepository.save(destinationAccount.get());
+
+			transfer.setState(State.SUCCESS.getNom());
 
 			return transferRepository.save(transfer);
 		}
 
 	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Fonction transactionnelle de suppression d'un transfert.
