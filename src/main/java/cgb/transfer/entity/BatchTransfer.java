@@ -26,12 +26,14 @@ public class BatchTransfer {
 	
 	private LocalDate date;
 	
-	private String state;
-	
 	@OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	private List<Transfer> listTransfer = new ArrayList<>();
 
+    /**
+     * Etat du transfer
+     */
+    private State state;
 	
 	//Getters & Setters
 	public Long getId() {
@@ -74,11 +76,11 @@ public class BatchTransfer {
 		this.date = date;
 	}
 
-	public String getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 

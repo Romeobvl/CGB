@@ -52,10 +52,14 @@ public class Transfer {
     @JsonBackReference
     private BatchTransfer batch;
     
+    /**
+     * Etat du transfer
+     */
+    private State state;
+    
     // Getters and Setters with lombok
     
-    
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -96,6 +100,12 @@ public class Transfer {
 	}
 	public void setBatch(BatchTransfer batchTransfer) {
 		this.batch = batchTransfer;
+	}
+    public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }
