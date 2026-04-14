@@ -9,23 +9,12 @@ import cgb.transfer.entity.Transfer;
  * La classe de DTO d'un transfert.
  */
 public class BatchTransferRequest {
-
-    private String refLot;
 	
     private String sourceAccountNumber;
   
     private String descriptionLot;
     
     private List<TransferRequest> listTransfer;
-
-    
-	public String getRefLot() {
-		return refLot;
-	}
-
-	public void setRefLot(String refLot) {
-		this.refLot = refLot;
-	}
 
 	public String getSourceAccountNumber() {
 		return sourceAccountNumber;

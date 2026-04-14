@@ -1,5 +1,7 @@
 package cgb.transfer.controller;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +17,8 @@ import cgb.transfer.service.TransferService;
 import cgb.transfer.exception.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,19 +29,24 @@ public class BatchTransferRestController {
 	private BatchTransferService batchTransferService;
 
 	@PostMapping("/async")
-	public ResponseEntity<?> createBatchTransfer(@RequestBody BatchTransferRequest batchTransferRequest) {
+	public ResponseEntity<?> createBatchTransfer(@RequestBody BatchTransferRequest batchTransferRequest) throws InvalidAccountTransferException {
+		String numLot = batchTransferService.RefLotDuBatch();
+		
+		batchTransferService.createBatchTransfer(
+				batchTransferRequest.getSourceAccountNumber(),
+				batchTransferRequest.getDescriptionLot(),
+				batchTransferRequest.getListTransfer());
 
-		try {
-			BatchTransfer batch = batchTransferService.createBatchTransfer(
-					batchTransferRequest.getRefLot(),
-					batchTransferRequest.getSourceAccountNumber(),
-					batchTransferRequest.getDescriptionLot(),
-					batchTransferRequest.getListTransfer());
-			return ResponseEntity.ok(batch);
-	    } catch (TransferException e) {
-	        TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-	    }
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("numLot", numLot); 
+		response.put("dateLancement", LocalDate.now().toString());
+		response.put("message", "Traitement Lancé");
+		response.put("etat", "received");
+
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 	}
 
 }
+
+
