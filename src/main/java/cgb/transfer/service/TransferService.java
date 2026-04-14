@@ -60,11 +60,11 @@ public class TransferService {
 		Optional<Account> sourceAccount = accountRepository.findById(sourceAccountNumber);
 		Optional<Account> destinationAccount = accountRepository.findById(destinationAccountNumber);
 
-		if(sourceAccount == null){
+		if(sourceAccount.isEmpty()){
 			throw new InvalidAccountTransferException("Source");
 		}
 
-		if(destinationAccount == null){
+		if(destinationAccount.isEmpty()){
 			throw new InvalidAccountTransferException("Destination");
 		}
 
@@ -105,13 +105,13 @@ public class TransferService {
 		Optional<Account> sourceAccount = accountRepository.findById(sourceAccountNumber);
 		Optional<Account> destinationAccount = accountRepository.findById(destinationAccountNumber);
 
-		if(sourceAccount == null){
+		if(sourceAccount.isEmpty()){
 			transfer.setState(State.FAILURE.getNom());
 			transferRepository.save(transfer);
 			return transfer;
 		}
 
-		if(destinationAccount == null){
+		if(destinationAccount.isEmpty()){
 			transfer.setState(State.FAILURE.getNom());
 			transferRepository.save(transfer);
 			return transfer;

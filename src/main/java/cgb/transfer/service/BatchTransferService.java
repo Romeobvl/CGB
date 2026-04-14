@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import cgb.transfer.dto.TransferRequest;
 import cgb.transfer.entity.Account;
 import cgb.transfer.entity.BatchTransfer;
+import cgb.transfer.entity.State;
 import cgb.transfer.entity.Transfer;
 import cgb.transfer.exception.*;
 import cgb.transfer.exception.DeleteTransferException.FailureTransfert;
@@ -47,6 +48,7 @@ public class BatchTransferService {
     	  batch.setDescriptionLot(descriptionLot);
     	  batch.setSourceAccountNumber(sourceAccountNumber);
     	  batch.setDate(LocalDate.now());
+    	  batch.setState(State.RECEIVED.getNom());
     	  batchTransferRepository.save(batch);
     	  
     	  for (TransferRequest transferRequest: listTransfer) {
@@ -56,6 +58,8 @@ public class BatchTransferService {
     		transferRepository.save(transfer);
     		batchTransferRepository.save(batch);
     	  }
+    	  
+    	  batch.setState(State.CLOSED.getNom());
     	
     	return batchTransferRepository.save(batch);
     }
