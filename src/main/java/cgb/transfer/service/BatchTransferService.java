@@ -1,3 +1,4 @@
+
 package cgb.transfer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class BatchTransferService {
     private TransferService transferService;
     
     @Async
+    @Transactional
     public BatchTransfer createBatchTransfer(String refLot, String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException {
     	  if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
     		  throw new InvalidAccountTransferException("Source");
