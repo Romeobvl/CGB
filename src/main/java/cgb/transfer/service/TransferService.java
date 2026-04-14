@@ -107,12 +107,14 @@ public class TransferService {
 
 		if(sourceAccount.isEmpty()){
 			transfer.setState(State.FAILURE.getNom());
+			transfer.setStatusReason("Invalid transfer: Source account doesn't exist");
 			transferRepository.save(transfer);
 			return transfer;
 		}
 
 		if(destinationAccount.isEmpty()){
 			transfer.setState(State.FAILURE.getNom());
+			transfer.setStatusReason("Invalid transfer: Destination account doesn't exist");
 			transferRepository.save(transfer);
 			return transfer;
 		}
@@ -120,14 +122,17 @@ public class TransferService {
 
 		if(transferDate.isBefore(LocalDate.now())) {
 			transfer.setState(State.FAILURE.getNom());
+			transfer.setStatusReason("Invalid transfer: Date prior to today");
 			transferRepository.save(transfer);
 			return transfer;
 		}else if (amount <= 0) {
 			transfer.setState(State.FAILURE.getNom());
+			transfer.setStatusReason("Invalid transfer: Negative or null amount");
 			transferRepository.save(transfer);
 			return transfer;
 		}else if (sourceAccount.get().getSolde().compareTo(amount) < 0) {
 			transfer.setState(State.CANCELED.getNom());
+			transfer.setStatusReason("Invalid transfer: Insufficient funds in the source account");
 			transferRepository.save(transfer);
 			return transfer;
 		} else {

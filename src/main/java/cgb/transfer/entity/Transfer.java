@@ -57,6 +57,12 @@ public class Transfer {
      */
     private String state;
     
+    /**
+     * Raison de l'état
+     */
+    private String statusReason;
+    
+    
     // Getters and Setters with lombok
     
 	public Long getId() {
@@ -106,6 +112,12 @@ public class Transfer {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getStatusReason() {
+		return statusReason;
+	}
+	public void setStatusReason(String statusReason) {
+		this.statusReason = statusReason;
 	}
 
 }
