@@ -13,6 +13,7 @@ import cgb.transfer.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -167,6 +168,11 @@ public class TransferService {
 		transferRepository.deleteById(id);
 		if (otranfer.isEmpty())throw new DeleteTransferException(FailureTransfert.OBJECT_NOT_FOUND); 
 		return otranfer.orElse(null);
+	}
+	
+	
+	public List<Transfer> getTransferFromBatch(String refLot) {
+		return transferRepository.getTransferFromBatch(refLot);
 	}
 }
 

@@ -89,6 +89,10 @@ public class BatchTransferService {
 	public int countBatchTransfers(LocalDate date) {
 		return batchTransferRepository.countBatchTransfers(date);
 	}
+	
+	public BatchTransfer getBatch(String refLot) {
+		return batchTransferRepository.getBatch(refLot);
+	}
 
 	public String RefLotDuBatch() {
 		LocalDate date = LocalDate.now();

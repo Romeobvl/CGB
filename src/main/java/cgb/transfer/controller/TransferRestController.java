@@ -67,9 +67,9 @@ public class TransferRestController {
 			TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 		}        
-	}  
-
-
+	}
+	
+	
 	/*
     @PostMapping
     public ResponseEntity<String> testTransfer(@RequestBody String s) {
