@@ -1,0 +1,8 @@
+2026-04-15 16:14:44Batch refrence: 2026-04-15-4 | Creating Batch successed
+2026-04-15 16:14:44Batch refrence: 2026-04-15-4 | Batch Transfers completed
+2026-04-15 16:20:07 | Batch refrence: 2026-04-15-8 | Creating Batch successed
+2026-04-15 16:20:07 | Batch refrence: 2026-04-15-8 | Batch Transfers completed
+2026-04-15 16:40:03 | Batch refrence: 2026-04-15-9 | Creating Batch successed
+2026-04-15 16:40:03 | Transfer from FR8247572569140759710261274 to FR9201385266686919610292002 | Amount: -2.0 | Date: 2026-04-15 | Status: failure | Reason: Invalid transfer: Negative or null amount
+2026-04-15 16:40:03 | Transfer from FR8247572569140759710261274 to FR9201385266686919610292002 | Amount: 10.0 | Date: 2026-04-15 | Status: success
+2026-04-15 16:40:03 | Batch refrence: 2026-04-15-9 | Batch Transfers completed

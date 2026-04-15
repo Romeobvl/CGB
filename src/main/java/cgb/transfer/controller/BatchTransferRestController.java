@@ -30,6 +30,8 @@ public class BatchTransferRestController {
 
 	@PostMapping("/async")
 	public ResponseEntity<?> createBatchTransfer(@RequestBody BatchTransferRequest batchTransferRequest) throws InvalidAccountTransferException {
+		try {
+		
 		String numLot = batchTransferService.RefLotDuBatch();
 		
 		batchTransferService.createBatchTransfer(
@@ -45,6 +47,11 @@ public class BatchTransferRestController {
 		response.put("etat", "received");
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+		
+		} catch (TransferException e) {
+			TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 
 package cgb.transfer.service;
 
+import cgb.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -35,13 +36,12 @@ public class BatchTransferService {
 
 	@Autowired
 	private TransferService transferService;
-
+	
+	private Logger logger = Logger.getInstance();
+	
 	@Async
 	@Transactional
 	public void createBatchTransfer(String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException {
-		if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
-			throw new InvalidAccountTransferException("Source");
-		}
 
 		BatchTransfer batch = new BatchTransfer();
 		batch.setRefLot(RefLotDuBatch());
@@ -50,18 +50,40 @@ public class BatchTransferService {
 		batch.setDate(LocalDate.now());
 		batch.setState(State.RECEIVED.getNom());
 		batchTransferRepository.save(batch);
+		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch successed");
 
+		if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
+			logger.log("Batch refrence: "+ batch.getRefLot() + " | Invalid transfer: Source account doesn't exist");
+			throw new InvalidAccountTransferException("Source");
+		}
+		
 		for (TransferRequest transferRequest: listTransfer) {
 			Transfer transfer = transferService.createTransferForBatch(sourceAccountNumber, transferRequest.getDestinationAccountNumber(), transferRequest.getAmount(), LocalDate.now(), transferRequest.getDescription());
 			transfer.setBatch(batch);
 			batch.addTransfer(transfer);
+			logger.log(formatTransfer(transfer));
 			transferRepository.save(transfer);
 			batchTransferRepository.save(batch);
 		}
 
 		batch.setState(State.CLOSED.getNom());
-
+		logger.log("Batch refrence: "+ batch.getRefLot() + " | Batch Transfers completed");
+		
 		batchTransferRepository.save(batch);
+	}
+	
+	public String formatTransfer(Transfer transfer) {
+	    String message = "Transfer from " + transfer.getSourceAccountNumber() 
+	                   + " to " + transfer.getDestinationAccountNumber() 
+	                   + " | Amount: " + transfer.getAmount() 
+	                   + " | Date: " + transfer.getTransferDate() 
+	                   + " | Status: " + transfer.getState();
+	    
+	    if (transfer.getStatusReason() != null) {
+	        message += " | Reason: " + transfer.getStatusReason();
+	    }
+	    
+	    return message;
 	}
 
 	public int countBatchTransfers(LocalDate date) {
