@@ -60,7 +60,7 @@ public class BatchTransferRestController {
 	
 	@GetMapping("/{refLot}")
 	public ResponseEntity<?> getTransfer(@PathVariable String refLot) {
-		BatchTransfer batch = batchTransferService.getBatch(refLot);
+		BatchTransfer batch = batchTransferService.findBatchByRefLot(refLot);
 		List<Transfer> list = transferService.getTransferFromBatch(refLot);
 		batch.setListTransfer(list);
 		

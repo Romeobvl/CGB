@@ -15,5 +15,5 @@ public interface BatchTransferRepository extends JpaRepository<BatchTransfer, Lo
 	public int countBatchTransfers(@Param("date") LocalDate date);
 	
 	@Query("SELECT b FROM BatchTransfer b WHERE b.refLot = :refLot")
-	public BatchTransfer getBatch(@Param("refLot") String refLot);	
+	public BatchTransfer findBatchByRefLot(@Param("refLot") String refLot);	
 }

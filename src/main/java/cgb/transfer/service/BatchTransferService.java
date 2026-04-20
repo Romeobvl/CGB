@@ -50,7 +50,7 @@ public class BatchTransferService {
 		batch.setDate(LocalDate.now());
 		batch.setState(State.RECEIVED.getNom());
 		batchTransferRepository.save(batch);
-		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch successed");
+		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch succeeded");
 
 		if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
 			logger.log("Batch refrence: "+ batch.getRefLot() + " | Invalid transfer: Source account doesn't exist");
@@ -90,9 +90,10 @@ public class BatchTransferService {
 		return batchTransferRepository.countBatchTransfers(date);
 	}
 	
-	public BatchTransfer getBatch(String refLot) {
-		return batchTransferRepository.getBatch(refLot);
+	public BatchTransfer findBatchByRefLot(String refLot) {
+		return batchTransferRepository.findBatchByRefLot(refLot);
 	}
+	
 
 	public String RefLotDuBatch() {
 		LocalDate date = LocalDate.now();

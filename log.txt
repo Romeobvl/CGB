@@ -6,3 +6,19 @@
 2026-04-15 16:40:03 | Transfer from FR8247572569140759710261274 to FR9201385266686919610292002 | Amount: -2.0 | Date: 2026-04-15 | Status: failure | Reason: Invalid transfer: Negative or null amount
 2026-04-15 16:40:03 | Transfer from FR8247572569140759710261274 to FR9201385266686919610292002 | Amount: 10.0 | Date: 2026-04-15 | Status: success
 2026-04-15 16:40:03 | Batch refrence: 2026-04-15-9 | Batch Transfers completed
+2026-04-20 13:05:36 | Batch refrence: 2026-04-20-1 | Creating Batch succeeded
+2026-04-20 13:05:36 | Transfer from FR8247572569140759710261274 to FR92013866686919610292002 | Amount: -2.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:05:36 | Transfer from FR8247572569140759710261274 to FR92015266686919610292002 | Amount: 10.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:05:36 | Batch refrence: 2026-04-20-1 | Batch Transfers completed
+2026-04-20 13:05:36 | Batch refrence: 2026-04-20-2 | Creating Batch succeeded
+2026-04-20 13:05:36 | Transfer from FR8247572569140759710261274 to FR92013866686919610292002 | Amount: -2.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:05:36 | Transfer from FR8247572569140759710261274 to FR9201385266686919610292002 | Amount: 10.0 | Date: 2026-04-20 | Status: success
+2026-04-20 13:05:36 | Batch refrence: 2026-04-20-2 | Batch Transfers completed
+2026-04-20 13:23:51 | Batch refrence: 2026-04-20-3 | Creating Batch succeeded
+2026-04-20 13:23:51 | Transfer from FR8247572569140759710261274 to FR92013866686919610292002 | Amount: -2.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:23:51 | Transfer from FR8247572569140759710261274 to FR92015266686919610292002 | Amount: 10.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:23:51 | Batch refrence: 2026-04-20-3 | Batch Transfers completed
+2026-04-20 13:23:51 | Batch refrence: 2026-04-20-4 | Creating Batch succeeded
+2026-04-20 13:23:51 | Transfer from FR8247572569140759710261274 to FR92013866686919610292002 | Amount: -2.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:23:51 | Transfer from FR8247572569140759710261274 to FR92015266686919610292002 | Amount: 10.0 | Date: 2026-04-20 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-04-20 13:23:51 | Batch refrence: 2026-04-20-4 | Batch Transfers completed
