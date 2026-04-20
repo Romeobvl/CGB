@@ -18,6 +18,7 @@ import cgb.transfer.exception.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,6 +28,9 @@ public class BatchTransferRestController {
 
 	@Autowired
 	private BatchTransferService batchTransferService;
+	
+	@Autowired
+	private TransferService transferService;
 
 	@PostMapping("/async")
 	public ResponseEntity<?> createBatchTransfer(@RequestBody BatchTransferRequest batchTransferRequest) throws InvalidAccountTransferException {
@@ -52,6 +56,15 @@ public class BatchTransferRestController {
 			TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 		}
+	}
+	
+	@GetMapping("/{refLot}")
+	public ResponseEntity<?> getTransfer(@PathVariable String refLot) {
+		BatchTransfer batch = batchTransferService.findBatchByRefLot(refLot);
+		List<Transfer> list = transferService.getTransferFromBatch(refLot);
+		batch.setListTransfer(list);
+		
+		return ResponseEntity.ok(batch);
 	}
 
 }

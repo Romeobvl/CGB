@@ -13,4 +13,7 @@ import cgb.transfer.entity.BatchTransfer;
 public interface BatchTransferRepository extends JpaRepository<BatchTransfer, Long> {
 	@Query("SELECT COUNT(id) FROM BatchTransfer WHERE date = :date")
 	public int countBatchTransfers(@Param("date") LocalDate date);
+	
+	@Query("SELECT b FROM BatchTransfer b WHERE b.refLot = :refLot")
+	public BatchTransfer findBatchByRefLot(@Param("refLot") String refLot);	
 }

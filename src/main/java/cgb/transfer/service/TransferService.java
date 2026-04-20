@@ -1,6 +1,7 @@
 package cgb.transfer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import cgb.transfer.entity.Account;
@@ -13,6 +14,7 @@ import cgb.transfer.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -168,6 +170,27 @@ public class TransferService {
 		if (otranfer.isEmpty())throw new DeleteTransferException(FailureTransfert.OBJECT_NOT_FOUND); 
 		return otranfer.orElse(null);
 	}
+	
+	
+	public List<Transfer> getTransferFromBatch(String refLot) {
+		return transferRepository.getTransferFromBatch(refLot);
+	}
+	
+	public List<Transfer> findByRefLotAndNotSuccess(String refLot) {
+		return transferRepository.findByRefLotAndNotSuccess(refLot);
+	}
+	public List<Transfer> findByDateIntervalAndNotSuccess(LocalDate start, LocalDate end) {
+		return transferRepository.findByDateIntervalAndNotSuccess(start, end);
+	}
+	
+	public List<Transfer> findByDestAccountAndNotSuccess(String destinationAccountNumber) {
+		return transferRepository.findByDestAccountAndNotSuccess(destinationAccountNumber);
+	}
+	
+	
+	
+	
+	
 }
 
 

@@ -1,7 +1,6 @@
 
 package cgb.transfer.service;
 
-import cgb.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -37,7 +36,11 @@ public class BatchTransferService {
 	@Autowired
 	private TransferService transferService;
 	
-	private Logger logger = Logger.getInstance();
+	@Autowired
+    private LogService logger;
+	
+	@Autowired
+    private MailService mail;
 	
 	@Async
 	@Transactional
@@ -50,15 +53,25 @@ public class BatchTransferService {
 		batch.setDate(LocalDate.now());
 		batch.setState(State.RECEIVED.getNom());
 		batchTransferRepository.save(batch);
-		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch successed");
+		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch succeeded");
 
 		if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
 			logger.log("Batch refrence: "+ batch.getRefLot() + " | Invalid transfer: Source account doesn't exist");
 			throw new InvalidAccountTransferException("Source");
 		}
 		
+		int successCount = 0;
+		int failureCount = 0;
+		
 		for (TransferRequest transferRequest: listTransfer) {
 			Transfer transfer = transferService.createTransferForBatch(sourceAccountNumber, transferRequest.getDestinationAccountNumber(), transferRequest.getAmount(), LocalDate.now(), transferRequest.getDescription());
+			
+			if (transfer.getState() == "success") {
+				successCount += 1;
+			} else {
+				failureCount += 1;
+			}
+			
 			transfer.setBatch(batch);
 			batch.addTransfer(transfer);
 			logger.log(formatTransfer(transfer));
@@ -70,6 +83,13 @@ public class BatchTransferService {
 		logger.log("Batch refrence: "+ batch.getRefLot() + " | Batch Transfers completed");
 		
 		batchTransferRepository.save(batch);
+		
+		try {
+	        mail.sendBatchReport("comptable@gsb.fr", batch.getRefLot(), batch.getDate(), successCount, failureCount);
+	        logger.log("Batch reference: " + batch.getRefLot() + " | Notification email sent successfully");
+	    } catch (Exception e) {
+	        logger.log("WARNING: Notification email failed for batch " + batch.getRefLot() + ". Error: " + e.getMessage());
+	    }
 	}
 	
 	public String formatTransfer(Transfer transfer) {
@@ -89,6 +109,11 @@ public class BatchTransferService {
 	public int countBatchTransfers(LocalDate date) {
 		return batchTransferRepository.countBatchTransfers(date);
 	}
+	
+	public BatchTransfer findBatchByRefLot(String refLot) {
+		return batchTransferRepository.findBatchByRefLot(refLot);
+	}
+	
 
 	public String RefLotDuBatch() {
 		LocalDate date = LocalDate.now();
