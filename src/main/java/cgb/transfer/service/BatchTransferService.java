@@ -39,6 +39,9 @@ public class BatchTransferService {
 	@Autowired
     private LogService logger;
 	
+	@Autowired
+    private MailService mail;
+	
 	@Async
 	@Transactional
 	public void createBatchTransfer(String sourceAccountNumber, String descriptionLot, List<TransferRequest> listTransfer) throws InvalidAccountTransferException {
@@ -57,8 +60,18 @@ public class BatchTransferService {
 			throw new InvalidAccountTransferException("Source");
 		}
 		
+		int successCount = 0;
+		int failureCount = 0;
+		
 		for (TransferRequest transferRequest: listTransfer) {
 			Transfer transfer = transferService.createTransferForBatch(sourceAccountNumber, transferRequest.getDestinationAccountNumber(), transferRequest.getAmount(), LocalDate.now(), transferRequest.getDescription());
+			
+			if (transfer.getState() == "success") {
+				successCount += 1;
+			} else {
+				failureCount += 1;
+			}
+			
 			transfer.setBatch(batch);
 			batch.addTransfer(transfer);
 			logger.log(formatTransfer(transfer));
@@ -70,6 +83,13 @@ public class BatchTransferService {
 		logger.log("Batch refrence: "+ batch.getRefLot() + " | Batch Transfers completed");
 		
 		batchTransferRepository.save(batch);
+		
+		try {
+	        mail.sendBatchReport("comptable@gsb.fr", batch.getRefLot(), batch.getDate(), successCount, failureCount);
+	        logger.log("Batch reference: " + batch.getRefLot() + " | Notification email sent successfully");
+	    } catch (Exception e) {
+	        logger.log("WARNING: Notification email failed for batch " + batch.getRefLot() + ". Error: " + e.getMessage());
+	    }
 	}
 	
 	public String formatTransfer(Transfer transfer) {
