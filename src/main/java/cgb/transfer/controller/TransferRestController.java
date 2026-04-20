@@ -71,7 +71,6 @@ public class TransferRestController {
 		}        
 	}
 	
-	
 	@GetMapping("/failure/lot/{refLot}")
 	public ResponseEntity<?> findByRefLotAndNotSuccess(@PathVariable String refLot) {
 		List<Transfer> list = transferService.findByRefLotAndNotSuccess(refLot);

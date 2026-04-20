@@ -1,7 +1,6 @@
 
 package cgb.transfer.service;
 
-import cgb.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -37,7 +36,8 @@ public class BatchTransferService {
 	@Autowired
 	private TransferService transferService;
 	
-	private Logger logger = Logger.getInstance();
+	@Autowired
+    private LogService logger;
 	
 	@Async
 	@Transactional
