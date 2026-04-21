@@ -4,7 +4,7 @@ public enum State {
 	WAITING("waiting"),
 	FAILURE("failure"),
 	SUCCESS("success"),
-	CANCELED("canceled"),
+	CANCELLED("cancelled"),
 	RECEIVED("received"),
 	CLOSED("closed");
 

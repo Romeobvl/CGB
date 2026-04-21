@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import cgb.transfer.dto.BatchTransferRequest;
 import cgb.transfer.dto.TransferRequest;
 import cgb.transfer.entity.Account;
 import cgb.transfer.entity.BatchTransfer;
@@ -112,6 +113,13 @@ public class BatchTransferService {
 	
 	public BatchTransfer findBatchByRefLot(String refLot) {
 		return batchTransferRepository.findBatchByRefLot(refLot);
+	}
+	
+	public BatchTransferRequest findBatchByRefLotReplay(String refLot) {
+		BatchTransferRequest b = new BatchTransferRequest();
+		b.setDescriptionLot("REJEU : " + batchTransferRepository.findBatchByRefLot(refLot).getDescriptionLot());
+		b.setSourceAccountNumber(batchTransferRepository.findBatchByRefLot(refLot).getSourceAccountNumber());
+		return b;
 	}
 	
 
