@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import cgb.transfer.dto.BatchTransferRequest;
+import cgb.transfer.dto.TransferRequest;
 import cgb.transfer.entity.BatchTransfer;
 import cgb.transfer.entity.Transfer;
 import cgb.transfer.service.BatchTransferService;
@@ -66,6 +67,17 @@ public class BatchTransferRestController {
 		
 		return ResponseEntity.ok(batch);
 	}
+	
+	@GetMapping("/replay/{refLot}")
+	public ResponseEntity<?> getCancelledTransfer(@PathVariable String refLot) {
+		BatchTransferRequest batch = batchTransferService.findBatchByRefLotReplay(refLot);
+		List<TransferRequest> list = transferService.findByRefLotAndCancelled(refLot);
+		batch.setListTransfer(list);
+		
+		
+		return ResponseEntity.ok(batch);
+	}
+
 
 }
 
