@@ -57,7 +57,7 @@ public class BatchTransferService {
 		logger.log("Batch refrence: "+ batch.getRefLot() + " | Creating Batch succeeded");
 
 		if (!accountRepository.findById(sourceAccountNumber).isPresent()) {
-			logger.log("Batch refrence: "+ batch.getRefLot() + " | Invalid transfer: Source account doesn't exist");
+			logger.log("Batch reference: "+ batch.getRefLot() + " | Invalid transfer: Source account doesn't exist");
 			throw new InvalidAccountTransferException("Source");
 		}
 		
@@ -81,7 +81,7 @@ public class BatchTransferService {
 		}
 
 		batch.setState(State.CLOSED.getNom());
-		logger.log("Batch refrence: "+ batch.getRefLot() + " | Batch Transfers completed");
+		logger.log("Batch reference: "+ batch.getRefLot() + " | Batch Transfers completed");
 		
 		batchTransferRepository.save(batch);
 		
