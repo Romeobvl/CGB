@@ -106,3 +106,10 @@
 2026-04-21 13:21:52 | Transfer from FR8247572569140759710261274 to FR6049058557752259281633600 | Amount: 200000.0 | Date: 2026-04-21 | Status: cancelled | Reason: Invalid transfer: Insufficient funds in the source account
 2026-04-21 13:21:52 | Batch refrence: 2026-04-21-8 | Batch Transfers completed
 2026-04-21 13:21:53 | Batch reference: 2026-04-21-8 | Notification email sent successfully
+2026-04-30 23:08:24 | Batch refrence: 2026-04-30-1 | Creating Batch succeeded
+2026-04-30 23:08:24 | Batch reference: 2026-04-30-1 | Invalid transfer: Source account doesn't exist
+2026-04-30 23:09:35 | Batch refrence: 2026-04-30-2 | Creating Batch succeeded
+2026-04-30 23:09:35 | Transfer from FR4458949361767023425232268 to FR2383436781324251357148844 | Amount: 2.0 | Date: 2026-04-30 | Status: failure | Reason: Transfer failed: Account FR2383436781324251357148844 is not a registered beneficiary of account FR4458949361767023425232268
+2026-04-30 23:09:35 | Transfer from FR4458949361767023425232268 to FR2644022002913747998473630 | Amount: 2.0 | Date: 2026-04-30 | Status: success
+2026-04-30 23:09:35 | Batch reference: 2026-04-30-2 | Batch Transfers completed
+2026-04-30 23:09:37 | Batch reference: 2026-04-30-2 | Notification email sent successfully

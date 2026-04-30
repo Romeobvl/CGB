@@ -137,6 +137,11 @@ public class TransferService {
 			transfer.setStatusReason("Invalid transfer: Negative or null amount");
 			transferRepository.save(transfer);
 			return transfer;
+		}else if (ableToTransfer(sourceAccountNumber, destinationAccountNumber) == false) {
+			transfer.setState(State.FAILURE.getNom());
+			transfer.setStatusReason("Transfer failed: Account " + destinationAccountNumber + " is not a registered beneficiary of account " + sourceAccountNumber);
+			transferRepository.save(transfer);
+			return transfer;
 		}else if (sourceAccount.get().getSolde().compareTo(amount) < 0) {
 			transfer.setState(State.CANCELLED.getNom());
 			transfer.setStatusReason("Invalid transfer: Insufficient funds in the source account");
