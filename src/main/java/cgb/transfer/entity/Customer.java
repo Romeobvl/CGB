@@ -20,16 +20,16 @@ public class Customer {
 	private String LEI;
 
 	@OneToMany(mappedBy = "customer")
-	private List<UserCGB> listUsers = new ArrayList<UserCGB>();
+	private List<UserCGB> myUsers = new ArrayList<UserCGB>();
 
 	@OneToMany(mappedBy = "customer")
-	private List<Account> listRecipientAccounts  = new ArrayList<Account>();
+	private List<Account> myAccounts = new ArrayList<Account>();
 	
 	
-	@ManyToMany(mappedBy = "recipientAccounts", cascade =
+	@ManyToMany(mappedBy = "listCustomer", cascade =
 		{CascadeType.PERSIST, CascadeType.MERGE})
 	@JsonBackReference
-	private List<Account> list = new ArrayList<Account>();
+	private List<Account> myRecipientAccounts = new ArrayList<Account>();
 
 	
 	public Long getId() {
@@ -65,40 +65,40 @@ public class Customer {
 	}
 
 	public List<UserCGB> getListUsers() {
-		return listUsers;
+		return myUsers;
 	}
 
 	public void setListUsers(List<UserCGB> listUsers) {
-		this.listUsers = listUsers;
+		this.myUsers = listUsers;
 	}
 	
 	public void addUsers(UserCGB userCGB) {
-		this.listUsers.add(userCGB);
+		this.myUsers.add(userCGB);
 	}
 
 
 	public List<Account> getListAccounts() {
-		return listAccounts;
+		return myAccounts;
 	}
 
 	public void setListAccounts(List<Account> listAccounts) {
-		this.listAccounts = listAccounts;
+		this.myAccounts = listAccounts;
 	}
 	
 	public void addAccount(Account account) {
-		this.list.add(account);
+		this.myAccounts.add(account);
 	}
 
 	public List<Account> getList() {
-		return list;
+		return myRecipientAccounts;
 	}
 
 	public void setList(List<Account> list) {
-		this.list = list;
+		this.myRecipientAccounts = list;
 	}
 	
 	public void add(Account account) {
-		this.list.add(account);
+		this.myRecipientAccounts.add(account);
 	}
 
 }

@@ -33,7 +33,7 @@ public class Account {
 			joinColumns = @JoinColumn(name = "accountNumber"),
 			inverseJoinColumns = @JoinColumn(name = "account_id")
 			)
-	private List<Customer> recipientAccounts = new ArrayList<Customer>();
+	private List<Customer> listCustomer = new ArrayList<Customer>();
 
 
 	// Getters and Setters obtenus grace à Data
@@ -63,15 +63,15 @@ public class Account {
 	}
 
 	public List<Customer> getRecipientAccounts() {
-		return recipientAccounts;
+		return listCustomer;
 	}
 
 	public void setRecipientAccounts(List<Customer> recipientAccounts) {
-		this.recipientAccounts = recipientAccounts;
+		this.listCustomer = recipientAccounts;
 	}
 	
 	public void addCustomer(Customer customer) {
-		this.recipientAccounts.add(customer);
+		this.listCustomer.add(customer);
 	}
 
 	
