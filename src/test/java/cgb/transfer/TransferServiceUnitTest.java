@@ -22,6 +22,7 @@ import cgb.transfer.exception.DateTransferException;
 import cgb.transfer.exception.DeleteTransferException;
 import cgb.transfer.exception.InsufficientFundsTransferException;
 import cgb.transfer.exception.InvalidAccountTransferException;
+import cgb.transfer.exception.RecipientAccountTransferException;
 import cgb.transfer.repository.AccountRepository;
 import cgb.transfer.repository.TransferRepository;
 import cgb.transfer.service.TransferService;
@@ -62,7 +63,7 @@ class TransferServiceUnitTest {
 	}
 
 	@Test
-	void testCreateTransfer() throws DateTransferException, AmountTransferException, InvalidAccountTransferException, InsufficientFundsTransferException { 
+	void testCreateTransfer() throws DateTransferException, AmountTransferException, InvalidAccountTransferException, InsufficientFundsTransferException, RecipientAccountTransferException { 
 		
 		when(accountRepository.findById("FR5554448575784477474466689"))
 		.thenReturn(Optional.of(srcAccount));
