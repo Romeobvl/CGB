@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import cgb.transfer.dto.TransferRequest;
 import cgb.transfer.entity.Account;
+import cgb.transfer.entity.Customer;
 import cgb.transfer.entity.State;
 import cgb.transfer.entity.Transfer;
 import cgb.transfer.exception.*;
@@ -52,7 +53,7 @@ public class TransferService {
 	 */
 	@Transactional
 	public Transfer createTransfer(String sourceAccountNumber, String destinationAccountNumber,
-			Double amount, LocalDate transferDate, String description) throws DateTransferException, AmountTransferException, InvalidAccountTransferException, InsufficientFundsTransferException {
+			Double amount, LocalDate transferDate, String description) throws DateTransferException, AmountTransferException, InvalidAccountTransferException, InsufficientFundsTransferException, RecipientAccountTransferException {
 
 		Transfer transfer = new Transfer();
 		transfer.setSourceAccountNumber(sourceAccountNumber);
@@ -76,6 +77,8 @@ public class TransferService {
 			throw new DateTransferException();
 		}else if (amount <= 0) {
 			throw new AmountTransferException();
+		}else if (ableToTransfer(sourceAccountNumber, destinationAccountNumber) == false) {
+			throw new RecipientAccountTransferException(sourceAccountNumber, destinationAccountNumber);
 		}else if (sourceAccount.get().getSolde().compareTo(amount) < 0) {
 			throw new InsufficientFundsTransferException();
 		} else {
@@ -203,7 +206,24 @@ public class TransferService {
 		return trq;
 	}
 	
-	
+	public boolean ableToTransfer(String sourceAccountNumber, String destinationAccountNumber) {
+	    Account sourceAccount = accountRepository.findById(sourceAccountNumber).orElse(null);
+	    Account destinationAccount = accountRepository.findById(destinationAccountNumber).orElse(null);
+
+	    if (sourceAccount == null || destinationAccount == null || destinationAccount.getCustomer() == null) {
+	        return false;
+	    }
+	    
+	    Long destinationCustomerId = destinationAccount.getCustomer().getId();
+
+	    for (Customer beneficiary : sourceAccount.getRecipientAccounts()) {
+	        if (beneficiary.getId().equals(destinationCustomerId)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
 	
 	
 }

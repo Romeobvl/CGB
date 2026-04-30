@@ -127,12 +127,15 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         account1.setAccountNumber(IbanGenerator.generateValidIban());
         account1.setSolde(300.00);
         account1.setCustomer(customerGSB);
+        account1.addCustomer(customerGCORP); 
+        account1.addCustomer(customerGSB);   
         accountRepository.save(account1);
 
         Account account2 = new Account();
         account2.setAccountNumber(IbanGenerator.generateValidIban());
         account2.setSolde(500.00);
         account2.setCustomer(customerGSB);
+        account2.addCustomer(customerGCORP); 
         accountRepository.save(account2);
 
         Account account3 = new Account();
@@ -187,12 +190,15 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         account11.setAccountNumber(IbanGenerator.generateValidIban());
         account11.setSolde(3200.00);
         account11.setCustomer(customerGCORP);
+        account11.addCustomer(customerGSB);
+        account11.addCustomer(customerGCORP);
         accountRepository.save(account11);
         
         Account account12 = new Account();
         account12.setAccountNumber(IbanGenerator.generateValidIban());
         account12.setSolde(450.00);
         account12.setCustomer(customerGCORP);
+        account12.addCustomer(customerGSB);
         accountRepository.save(account12);
         
         Account account13 = new Account();

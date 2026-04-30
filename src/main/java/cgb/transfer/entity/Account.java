@@ -31,7 +31,7 @@ public class Account {
 	@JoinTable(
 			name = "recipient_accounts",
 			joinColumns = @JoinColumn(name = "accountNumber"),
-			inverseJoinColumns = @JoinColumn(name = "account_id")
+			inverseJoinColumns = @JoinColumn(name = "customer_id")
 			)
 	private List<Customer> listCustomer = new ArrayList<Customer>();
 
