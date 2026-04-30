@@ -14,10 +14,9 @@ public class UserCGB {
 	
 	private String email;
 	
-	@ManyToOne
-	@JoinColumn(name = "role_id")
+	@Enumerated(EnumType.STRING)
     private Role role;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
     private Customer customer;
