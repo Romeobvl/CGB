@@ -10,6 +10,7 @@ import cgb.transfer.entity.UserCGB;
 import cgb.transfer.repository.AccountRepository;
 import cgb.transfer.repository.CustomerRepository;
 import cgb.transfer.repository.UserCGBRepository;
+import cgb.transfer.security.service.MyUserDetailsService;
 import cgb.utils.IbanGenerator;
 import jakarta.annotation.PostConstruct;
 
@@ -31,20 +32,21 @@ public class DatabaseInitializer {
 	private final AccountRepository accountRepository;
 	private final CustomerRepository customerRepository;
 	private final UserCGBRepository userRepository;
+	private final MyUserDetailsService userService;
 	
     @Autowired
-    public DatabaseInitializer(AccountRepository accountRepository, CustomerRepository customerRepository, UserCGBRepository userRepository) {
-		//super();
-    	this.accountRepository = accountRepository;
-    	this.customerRepository = customerRepository;
-    	this.userRepository = userRepository;
-	}
+    public DatabaseInitializer(AccountRepository accountRepository, CustomerRepository customerRepository, UserCGBRepository userRepository, MyUserDetailsService userService) {
+        this.accountRepository = accountRepository;
+        this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
 
 	@PostConstruct
     public void init() {
         // Vérifiez si la base de données est vide avant d'insérer des données
         if (accountRepository.count() == 0) {
-           insertSampleData(accountRepository, customerRepository, userRepository);
+           insertSampleData(accountRepository, customerRepository, userService);
         }
     }
 
@@ -70,7 +72,7 @@ public class DatabaseInitializer {
      * Fonction de valorisation de la base appellée si cette dernière est vide.
      * @param accountRepository  L'instance de Repository actuellement utilisée.
      */
-public static void insertSampleData(AccountRepository accountRepository, CustomerRepository customerRepository, UserCGBRepository userRepository) {
+public static void insertSampleData(AccountRepository accountRepository, CustomerRepository customerRepository, MyUserDetailsService userService) {
         
         Customer customerGSB = new Customer();
         customerGSB.setId(1L);
@@ -93,7 +95,7 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         userGsb1.setEmail("utilisateur@gsb.fr");
         userGsb1.setRole(Role.USER);
         userGsb1.setCustomer(customerGSB);
-        userRepository.save(userGsb1);
+        userService.registerUser(userGsb1);
 
         UserCGB admin = new UserCGB();
         admin.setId(2L);
@@ -102,7 +104,7 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         admin.setEmail("admin@gsb.fr");
         admin.setRole(Role.ADMIN);
         admin.setCustomer(customerGSB);
-        userRepository.save(admin);
+        userService.registerUser(admin);
 
         UserCGB comptableGCORP = new UserCGB();
         comptableGCORP.setId(3L);
@@ -111,7 +113,7 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         comptableGCORP.setEmail("comptabilite@gcorp.com");
         comptableGCORP.setRole(Role.COMPTABLE);
         comptableGCORP.setCustomer(customerGCORP);
-        userRepository.save(comptableGCORP);
+        userService.registerUser(comptableGCORP);
 
         UserCGB comptableGSB = new UserCGB();
         comptableGSB.setId(4L);
@@ -120,7 +122,7 @@ public static void insertSampleData(AccountRepository accountRepository, Custome
         comptableGSB.setEmail("comptabilite@gsb.com");
         comptableGSB.setRole(Role.COMPTABLE);
         comptableGSB.setCustomer(customerGSB);
-        userRepository.save(comptableGSB);
+        userService.registerUser(comptableGSB);
 
         
         Account account1 = new Account();
