@@ -42,10 +42,11 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/console/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/console/**")).permitAll() //uniquement en dev (spring.h2.console.enabled=false en prod)
                         .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/batch-transfers/**")).hasRole("COMPTABLE")
-                        .requestMatchers(new AntPathRequestMatcher("/api/transfers/**")).hasAnyRole("COMPTABLE", "USER")
+                        .requestMatchers(new AntPathRequestMatcher("/api/transfers/**")).hasAnyRole("COMPTABLE")
+                        .requestMatchers(new AntPathRequestMatcher("/api/transfers/failure/**")).hasAnyRole("COMPTABLE", "USER")
                         .anyRequest().authenticated())
                 .formLogin(form -> form.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
