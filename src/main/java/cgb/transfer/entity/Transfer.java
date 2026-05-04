@@ -3,21 +3,69 @@ package cgb.transfer.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+
+/**
+ * Classe permettant le mapping d'un tranfert entre la DB et l'API.
+ */
 @Entity
 public class Transfer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+    /**
+     * L'identifiant unique d'un tranfert; Auto-incrémenté.
+     */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+    /**
+     * L'identifiant unique du compte dont le transfert provient.
+     */
 	private String sourceAccountNumber;
+	
+	/**
+	 * L'identifiant unique du compte vers lequel le transfert termine.
+	 */
     private String destinationAccountNumber;
+    
+    /**
+     * Le montant du tranfert; peut être négatif.
+     */
     private Double amount;
+    
+    /**
+     * La date du transfert.
+     */
     private LocalDate transferDate;
+    
+    /**
+     * La description qui est associée au tranfert.
+     */
     private String description;
 
+    /**
+     * id du lot
+     */
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "batch_id")
+    @JsonBackReference
+    private BatchTransfer batch;
+    
+    /**
+     * Etat du transfer
+     */
+    private String state;
+    
+    /**
+     * Raison de l'état
+     */
+    private String statusReason;
+    
+    
     // Getters and Setters with lombok
     
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -52,6 +100,24 @@ public class Transfer {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public BatchTransfer getBatch() {
+		return batch;
+	}
+	public void setBatch(BatchTransfer batchTransfer) {
+		this.batch = batchTransfer;
+	}
+    public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getStatusReason() {
+		return statusReason;
+	}
+	public void setStatusReason(String statusReason) {
+		this.statusReason = statusReason;
 	}
 
 }

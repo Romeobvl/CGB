@@ -2,14 +2,34 @@ package cgb.transfer.dto;
 
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * La classe de DTO d'un transfert.
+ */
 
-
+//Permet de supprimer les lignes avec comme valeur null dans le JSON
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransferRequest {
+	/**
+	 * Le numéro de compte dont provient le transfert.
+	 */
     private String sourceAccountNumber;
+    /**
+     * Le numéro du compte ou termine le transfert.
+     */
     private String destinationAccountNumber;
+    /**
+     * Le montant transféré; peut être négatif.
+     */
     private Double amount;
+    /**
+     * La date du transfert.
+     */
     private LocalDate transferDate;
+    /**
+     * La description que l'utilisateur à associé au transfert; peut être vide.
+     */
     private String description;
     
 	public String getSourceAccountNumber() {

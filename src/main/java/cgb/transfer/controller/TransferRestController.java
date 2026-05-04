@@ -8,92 +8,123 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import cgb.transfer.dto.TransferRequest;
+import cgb.transfer.entity.BatchTransfer;
 import cgb.transfer.entity.Transfer;
 import cgb.transfer.service.TransferService;
 import cgb.transfer.exception.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/transfers")
 public class TransferRestController {
 
-    @Autowired
-    private TransferService transferService;
+	@Autowired
+	private TransferService transferService;
 
 
-    
 
-    @PostMapping
-    public ResponseEntity<?> createTransfer(@RequestBody TransferRequest transferRequest) {
-    //public ResponseEntity<Transfer> createTransfer(@RequestBody TransferRequest transferRequest) {
-        try {
-    	Transfer transfer = transferService.createTransfer(
-                transferRequest.getSourceAccountNumber(),
-                transferRequest.getDestinationAccountNumber(),
-                transferRequest.getAmount(),
-                transferRequest.getTransferDate(),
-                transferRequest.getDescription()
-        );
-    	return ResponseEntity.ok(transfer);
-        }catch (RuntimeException e) {
-            TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }        
-    }  
-    
-    @DeleteMapping
-    public ResponseEntity<?> deleteTransfer(@RequestBody Long id) {
-    //public ResponseEntity<Transfer> createTransfer(@RequestBody TransferRequest transferRequest) {
-        try {
-    	Transfer t=transferService.deleteTransfer(id);
-        System.out.println(t);
-        TransferResponse succesResponse = new TransferResponse("SUCCESS", t.toString());
-    	return ResponseEntity.ok(succesResponse);
-    	
-        }catch (RuntimeException | DeleteTransferException e) {
-            TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }        
-    }  
-    
 
-    /*
+	@PostMapping
+	public ResponseEntity<?> createTransfer(@RequestBody TransferRequest transferRequest) {
+	
+	    try {
+	        Transfer transfer = transferRequest.getTransferDate() == null
+	            ? transferService.createTransfer(
+	                    transferRequest.getSourceAccountNumber(),
+	                    transferRequest.getDestinationAccountNumber(),
+	                    transferRequest.getAmount(),
+	                    LocalDate.now(),
+	                    transferRequest.getDescription()
+	              )
+	            : transferService.createTransfer(
+	                    transferRequest.getSourceAccountNumber(),
+	                    transferRequest.getDestinationAccountNumber(),
+	                    transferRequest.getAmount(),
+	                    transferRequest.getTransferDate(),
+	                    transferRequest.getDescription()
+	              );
+
+	        
+	        return ResponseEntity.ok(transfer);
+	        
+	    } catch (TransferException e) {
+	        TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+	    }
+}
+
+	@DeleteMapping
+	public ResponseEntity<?> deleteTransfer(@RequestBody Long id) {
+		//public ResponseEntity<Transfer> createTransfer(@RequestBody TransferRequest transferRequest) {
+		try {
+			Transfer t=transferService.deleteTransfer(id);
+			System.out.println(t);
+			TransferResponse succesResponse = new TransferResponse("SUCCESS", t.toString());
+			return ResponseEntity.ok(succesResponse);
+
+		}catch (RuntimeException | DeleteTransferException e) {
+			TransferResponse errorResponse = new TransferResponse("FAILURE", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+		}        
+	}
+	
+	@GetMapping("/failure/lot/{refLot}")
+	public ResponseEntity<?> findByRefLotAndNotSuccess(@PathVariable String refLot) {
+		List<Transfer> list = transferService.findByRefLotAndNotSuccess(refLot);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/failure/dates")
+	public ResponseEntity<?> findByDateIntervalAndNotSuccess(@RequestParam LocalDate start, LocalDate end) {
+		List<Transfer> list = transferService.findByDateIntervalAndNotSuccess(start, end);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/failure/destAcc/{destinationAccountNumber}")
+	public ResponseEntity<?> findByDestAccountAndNotSuccess(@PathVariable String destinationAccountNumber) {
+		List<Transfer> list = transferService.findByDestAccountAndNotSuccess(destinationAccountNumber);
+		return ResponseEntity.ok(list);
+	}
+
+	
+	/*
     @PostMapping
     public ResponseEntity<String> testTransfer(@RequestBody String s) {
     	System.out.println("Post reçu");
         return ResponseEntity.ok("Post bien traité: "+ s);
     } 
-    */
-    
+	 */
+
 }
 
 
 class TransferResponse {
-    private String status;
-    private String message;
+	private String status;
+	private String message;
 
-    // Constructeur
-    public TransferResponse(String status, String message) {
-        this.status = status;
-        this.message = message;
-    }
+	// Constructeur
+	public TransferResponse(String status, String message) {
+		this.status = status;
+		this.message = message;
+	}
 
-    // Getters et Setters
-    public String getStatus() {
-        return status;
-    }
+	// Getters et Setters
+	public String getStatus() {
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }
