@@ -5,7 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import cgb.transfer.entity.Customer;
+import cgb.transfer.entity.Account;
+import cgb.transfer.entity.AccountHistorical;
 import cgb.transfer.entity.UserCGB;
 
 /**
@@ -14,6 +15,7 @@ import cgb.transfer.entity.UserCGB;
  * (il manque l'annotation de Repository)
  */
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, String> {
+public interface AccountHistoricalRepository extends JpaRepository<AccountHistorical, String> {
 }
+
 

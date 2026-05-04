@@ -143,3 +143,25 @@
 2026-05-02 11:04:30 | Transfer from FR7404641545830626956368109 to FR3780352292544592415711816 | Amount: 1000.0 | Date: 2026-05-02 | Status: cancelled | Reason: Invalid transfer: Insufficient funds in the source account
 2026-05-02 11:04:30 | Batch reference: 2026-05-02-2 | Batch Transfers completed
 2026-05-02 11:04:33 | Batch reference: 2026-05-02-2 | Notification email sent successfully
+2026-05-04 11:20:26 | Batch refrence: 2026-05-04-1 | Creating Batch succeeded
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: 100.0 | Date: 2026-05-04 | Status: success
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR9999999999999999999999999 | Amount: 50.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: -20.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Negative or null amount
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: 0.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Negative or null amount
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR6270312259208294216430969 | Amount: 50.0 | Date: 2026-05-04 | Status: failure | Reason: Transfer failed: Account FR6270312259208294216430969 is not a registered beneficiary of account FR2717627838163103632395669
+2026-05-04 11:20:26 | Transfer from FR2717627838163103632395669 to FR2238874400280030957900192 | Amount: 1000.0 | Date: 2026-05-04 | Status: cancelled | Reason: Invalid transfer: Insufficient funds in the source account
+2026-05-04 11:20:26 | Batch reference: 2026-05-04-1 | Batch Transfers completed
+2026-05-04 11:20:46 | WARNING: Notification email failed for batch 2026-05-04-1. Error: Mail server connection failed. Failed messages: org.eclipse.angus.mail.util.MailConnectException: Couldn't connect to host, port: sandbox.smtp.mailtrap.io, 2525; timeout -1;
+  nested exception is:
+	java.net.ConnectException: Connection timed out: connect
+2026-05-04 11:21:56 | Batch refrence: 2026-05-04-2 | Creating Batch succeeded
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: 100.0 | Date: 2026-05-04 | Status: success
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR9999999999999999999999999 | Amount: 50.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Destination account doesn't exist
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: -20.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Negative or null amount
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR6961538918177432351581162 | Amount: 0.0 | Date: 2026-05-04 | Status: failure | Reason: Invalid transfer: Negative or null amount
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR6270312259208294216430969 | Amount: 50.0 | Date: 2026-05-04 | Status: failure | Reason: Transfer failed: Account FR6270312259208294216430969 is not a registered beneficiary of account FR2717627838163103632395669
+2026-05-04 11:21:56 | Transfer from FR2717627838163103632395669 to FR2238874400280030957900192 | Amount: 1000.0 | Date: 2026-05-04 | Status: cancelled | Reason: Invalid transfer: Insufficient funds in the source account
+2026-05-04 11:21:56 | Batch reference: 2026-05-04-2 | Batch Transfers completed
+2026-05-04 11:22:16 | WARNING: Notification email failed for batch 2026-05-04-2. Error: Mail server connection failed. Failed messages: org.eclipse.angus.mail.util.MailConnectException: Couldn't connect to host, port: sandbox.smtp.mailtrap.io, 2525; timeout -1;
+  nested exception is:
+	java.net.ConnectException: Connection timed out: connect

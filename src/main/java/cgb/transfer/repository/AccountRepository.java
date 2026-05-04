@@ -1,9 +1,12 @@
 package cgb.transfer.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import cgb.transfer.entity.Account;
+import cgb.transfer.entity.UserCGB;
 
 /**
  * Classe représentant la table des comptes dans la DB.
@@ -12,5 +15,7 @@ import cgb.transfer.entity.Account;
  */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
+	Optional<Account> findByAccountNumber(String accountNumber);
 }
+
 

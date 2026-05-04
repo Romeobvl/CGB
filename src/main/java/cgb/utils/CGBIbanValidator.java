@@ -57,6 +57,16 @@ public class CGBIbanValidator {
 		}
 		throw new InvalidUnCheckableIbanException();
 	}
+	
+	public boolean isIbanValidWE(String iban) {
+		IBANValidator validator = IBANValidator.getInstance();
+		
+		if( validator.isValid(iban)) {
+			return true;	
+		}
+		return false;
+	}
+	
 
 	/**
 	 * @param iban
